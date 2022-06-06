@@ -1,0 +1,88 @@
+''' cylinder_surface_min.py
+calculate the height to radius ratio of a minimum surface cylindrical
+container (can)
+
+r = radius
+circle_area = pi * r**2
+circle_circumference = 2 * pi * r
+
+h = height
+cylinder_volume = pi * r**2 * h
+
+surface area of a closed cylinder:
+the area of the top (pi * r**2) +
+the area of the bottom (pi * r**2) +
+the area of the side (2 * pi * r * h)
+or
+cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * h)
+
+let the cylinder_volume be a constant of 500 ml (cubiccentimeter)
+cylinder_volume = 500
+using the cylinder_volume formula express h in terms of r ...
+h = 500/(pi * r**2)
+
+now substitude h in the cylinder_surface formula
+(this expresses the cylinder surface in terms of r)
+cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * 500/(pi * r**2))
+
+tested with Python34  by  vegaseat  5apr2015
+'''
+
+from math import pi
+import pprint
+
+# rough calculation of the radius range to achieve a minimum surface
+# create a list of (surface area, radius) tuples
+mylist = []
+for r in range(1, 11):
+    cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * 500/(pi * r**2))
+    mylist.append((cylinder_surface, r))
+    
+#pprint.pprint(mylist)  # test
+
+''' we see that the surface minimizes between r=3 and r=5
+[(1006.2831853071795, 1),
+ (525.1327412287183, 2),
+ (389.88200109794957, 3),
+ (350.5309649148734, 4),
+ (357.0796326794897, 5),
+ (392.86133772513176, 6),
+ (450.7332229089426, 7),
+ (527.1238596594935, 8),
+ (620.0491209926575, 9),
+ (728.3185307179587, 10)]
+'''
+# since range() takes only integers let's use a while loop
+# then we can increment in smaller steps
+r = 3
+surface_list = []
+while True:
+    cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * 500/(pi * r**2))
+    surface_list.append((cylinder_surface, r)) 
+    r += 0.1
+    if r > 5:
+        break
+
+#print(min(surface_list))  # test
+
+''' the minimum surface of a 500ml can is reached at r = 4.3
+(348.7342358646343, 4.3)
+'''
+
+min_surface = min(surface_list)[0]
+sf = "Minimum surface of a 500ml can = {:0.1f} square centimeters"
+print(sf.format(min_surface))    
+radius = min(surface_list)[1]
+print("Radius of 500ml can = {:0.1f} centimeters".format(radius))
+height = 500/(pi * radius**2)
+print("Height of 500ml can = {:0.1f} centimeters".format(height))  
+# true for any volume ...
+sf = "Ratio of height to radius of a minimized surface can = {:0.1f}"
+print(sf.format(height/radius))
+
+''' result ...
+Minimum surface of a 500ml can = 348.7 square centimeters
+Radius of 500ml can = 4.3 centimeters
+Height of 500ml can = 8.6 centimeters
+Ratio of height to radius of a minimized surface can = 2.0
+'''
