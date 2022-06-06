@@ -1,4 +1,6 @@
-''' cylinder_surface_min.py
+from math import pi
+import pprint
+
 calculate the height to radius ratio of a minimum surface cylindrical
 container (can)
 
@@ -25,12 +27,6 @@ now substitude h in the cylinder_surface formula
 (this expresses the cylinder surface in terms of r)
 cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * 500/(pi * r**2))
 
-tested with Python34  by  vegaseat  5apr2015
-'''
-
-from math import pi
-import pprint
-
 # rough calculation of the radius range to achieve a minimum surface
 # create a list of (surface area, radius) tuples
 mylist = []
@@ -52,12 +48,13 @@ for r in range(1, 11):
  (620.0491209926575, 9),
  (728.3185307179587, 10)]
 '''
-# since range() takes only integers let's use a while loop
-# then we can increment in smaller steps
+# takes in a volume value (eg. 500ml)
+# tries different radius values in increments of 0.1
+# returns the smallest value for surface area after loop breaks
 r = 3
 surface_list = []
 while True:
-    cylinder_surface = 2 * (pi * r**2) + (2 * pi * r * 500/(pi * r**2))
+    cylinder_surface = (2 * pi * r * 500/(pi * r**2)) + 2 * (pi * r**2)
     surface_list.append((cylinder_surface, r)) 
     r += 0.1
     if r > 5:
@@ -80,9 +77,8 @@ print("Height of 500ml can = {:0.1f} centimeters".format(height))
 sf = "Ratio of height to radius of a minimized surface can = {:0.1f}"
 print(sf.format(height/radius))
 
-''' result ...
+# Test for a 500ml Coca Cola bottle
 Minimum surface of a 500ml can = 348.7 square centimeters
 Radius of 500ml can = 4.3 centimeters
 Height of 500ml can = 8.6 centimeters
 Ratio of height to radius of a minimized surface can = 2.0
-'''
